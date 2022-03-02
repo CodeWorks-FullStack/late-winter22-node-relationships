@@ -1,9 +1,15 @@
 import mongoose from 'mongoose'
 import { AccountSchema, ProfileSchema } from '../models/Account'
-import { ValueSchema } from '../models/Value'
+import { BookSchema } from '../models/Book'
+import { CourseSchema } from '../models/Course'
+import { EnrollmentSchema } from '../models/Enrollment'
+import { StudentSchema } from '../models/Student'
 
 class DbContext {
-  Values = mongoose.model('Value', ValueSchema);
+  Enrollments = mongoose.model('Enrollment', EnrollmentSchema)
+  Books = mongoose.model('Book', BookSchema)
+  Students = mongoose.model('Student', StudentSchema)
+  Courses = mongoose.model('Course', CourseSchema);
   Account = mongoose.model('Account', AccountSchema);
   Profiles = mongoose.model('Profile', ProfileSchema, 'accounts');
 }

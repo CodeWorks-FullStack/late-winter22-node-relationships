@@ -1,19 +1,20 @@
-import BaseController from '../utils/BaseController'
 import { Auth0Provider } from '@bcwdev/auth0provider'
+import { booksService } from '../services/BooksService'
+import BaseController from '../utils/BaseController'
 
-export class ValuesController extends BaseController {
+export class BooksController extends BaseController {
   constructor() {
-    super('api/values')
+    super('api/books')
     this.router
       .get('', this.getAll)
-      // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
   }
 
   async getAll(req, res, next) {
     try {
-      return res.send(['value1', 'value2'])
+      const books = await booksService.getAll(req.query)
+      return res.send(books)
     } catch (error) {
       next(error)
     }
@@ -21,9 +22,9 @@ export class ValuesController extends BaseController {
 
   async create(req, res, next) {
     try {
-      // NOTE NEVER TRUST THE CLIENT TO ADD THE CREATOR ID
       req.body.creatorId = req.userInfo.id
-      res.send(req.body)
+      const book = await booksService.create(req.body)
+      res.send(book)
     } catch (error) {
       next(error)
     }
